@@ -6,12 +6,12 @@
 //  Copyright © 2025 Daniel Saidi. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS) || targetEnvironment(macCatalyst) || os(visionOS)
 import AVKit
 import SwiftUI
 
-#if os(iOS) || os(tvOS) || targetEnvironment(macCatalyst) || os(visionOS)
 @MainActor
-class VideoPlayerController: AVPlayerViewController, VideoSessionManager {
+public final class VideoPlayerController: AVPlayerViewController, VideoSessionManager {
 
     /// TODO: Verify that this works, since it will crash if
     /// we're not in an isolated context. If it doesn't work,
@@ -23,12 +23,12 @@ class VideoPlayerController: AVPlayerViewController, VideoSessionManager {
     }
 
     #if os(iOS)
-    override func viewDidAppear(_ animated: Bool) {
+    public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setNeedsUpdateOfHomeIndicatorAutoHidden()
     }
 
-    override var prefersHomeIndicatorAutoHidden: BooleanLiteralType {
+    public override var prefersHomeIndicatorAutoHidden: BooleanLiteralType {
         true
     }
     #endif
@@ -36,7 +36,7 @@ class VideoPlayerController: AVPlayerViewController, VideoSessionManager {
 
     // MARK: - Properties
 
-    override var player: AVPlayer? {
+    public override var player: AVPlayer? {
         didSet {
             try? setupVideoSession()
             addTimeObserver()
