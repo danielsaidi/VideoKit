@@ -16,11 +16,14 @@ protocol VideoSessionManager {}
 extension VideoSessionManager {
 
     /// Set up the shared audio/video session for long video.
+    ///
+    /// This function only has effect on iOS, macOS Catalyst,
+    /// tvOS, and visionOS.
     func setupVideoSession() throws {
-        #if os(iOS) || os(visionOS)
+        #if os(iOS) || targetEnvironment(macCatalyst) || os(visionOS)
         try AVAudioSession.sharedInstance()
             .setCategory(.playback, mode: .moviePlayback, policy: .longFormVideo)
-        #else
+        #elseif os(tvOS)
         try AVAudioSession.sharedInstance()
             .setCategory(.playback, mode: .moviePlayback)
         #endif
