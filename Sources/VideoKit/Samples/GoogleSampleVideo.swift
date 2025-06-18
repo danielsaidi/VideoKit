@@ -34,7 +34,7 @@ extension GoogleSampleVideo {
             title: title,
             subtitle: subtitle,
             videoUrl: .init(string: sources.first ?? ""),
-            thumbnailUrl: thumbnailUrl
+            thumbnailUrl: .init(string: thumbnailUrl)
         )
     }
 }

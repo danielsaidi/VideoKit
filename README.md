@@ -38,7 +38,7 @@ https://github.com/danielsaidi/VideoKit.git
 
 ## Supported Platforms
 
-VideoKit supports iOS 15, iPadOS 15, macOS 12 Catalyst, tvOS 15, and visionOS 1.
+VideoKit supports iOS 15, iPadOS 15, macOS Catalyst 15, tvOS 15, and visionOS 1.
 
 
 

@@ -18,7 +18,7 @@ public struct SampleVideo: Codable, Sendable, Identifiable {
     public let title: String
     public let subtitle: String
     public let videoUrl: URL?
-    public let thumbnailUrl: String
+    public let thumbnailUrl: URL?
 }
 
 public extension SampleVideo {

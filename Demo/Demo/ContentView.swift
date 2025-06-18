@@ -10,35 +10,41 @@ import VideoKit
 
 struct ContentView: View {
 
-    @State var videoURL: URL?
-
-    let videoURLStrings: [String] = [
-        VideoPlayer.sampleVideoURLString
-    ]
-
-    var videoUrls: [URL?] {
-        var urls: [URL?] = videoURLStrings.compactMap(URL.init)
-        urls.append(Bundle.main.url(forResource: "BigBuckBunny", withExtension: "mp4"))
-        return urls
-    }
+    @State var sampleVideos: [SampleVideo] = []
+    @State var selection: SampleVideo?
 
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(videoUrls, id: \.self) { url in
-                    Button("Hej") {
-                        videoURL = url
+            ScrollView(.vertical) {
+                LazyVGrid(columns: [.init(.adaptive(minimum: 450, maximum: 1_000))]) {
+                    ForEach(sampleVideos) { video in
+                        Button {
+                            selection = video
+                        } label: {
+                            VStack(alignment: .leading) {
+                                RobustAsyncImage(url: video.thumbnailUrl)
+                                    .clipShape(.rect(cornerRadius: 10))
+                                Text(video.title).font(.title)
+                                Text(video.subtitle).foregroundColor(.primary)
+                            }
+                        }
+                        .padding()
+                        .multilineTextAlignment(.leading)
                     }
                 }
             }
             .navigationTitle("Demo")
-            .fullScreenCover(item: $videoURL) { url in
-                VideoPlayer(videoURL: url)
+            .fullScreenCover(item: $selection) { sample in
+                VideoPlayer(videoURL: sample.videoUrl)
                     .ignoresSafeArea()
                     .videoPlayerConfiguration { controller in
                         // Configure player here...
                     }
             }
+        }
+        .task {
+            let videos = try? SampleVideo.librarySampleVideos
+            sampleVideos = videos ?? []
         }
     }
 }
