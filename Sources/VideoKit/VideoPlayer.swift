@@ -21,8 +21,8 @@ import SwiftUI
 /// You can inject a `didPlayToEndAction` action to define a
 /// custom action to trigger when the player reaches the end.
 ///
-/// You can configure the video player by injecting a player
-/// configuration with ``SwiftUICore/View/videoPlayerConfiguration(_:)``.
+/// You can configure the view by applying the view modifier
+/// ``SwiftUICore/View/videoPlayerConfiguration(_:)``.
 public struct VideoPlayer: UIViewControllerRepresentable {
 
     public init(
@@ -67,6 +67,15 @@ public extension VideoPlayer {
     ) {}
 }
 
+public extension VideoPlayer {
+
+    /// A sample video URL that can be used to test the view.
+    static var sampleVideoURL: URL? {
+        let url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        return URL(string: url)
+    }
+}
+
 private extension VideoPlayer {
 
     func createPlayer() -> AVPlayer? {
@@ -95,9 +104,8 @@ public extension View {
 }
 
 #Preview {
-    let url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
     return VideoPlayer(
-        videoURL: .init(string: url)
+        videoURL: VideoPlayer.sampleVideoURL
     )
 }
 #endif
