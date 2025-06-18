@@ -104,8 +104,12 @@ public extension View {
 }
 
 #Preview {
-    return VideoPlayer(
+    VideoPlayer(
         videoURL: VideoPlayer.sampleVideoURL
     )
+    .aspectRatio(16/9, contentMode: .fit)
+    .videoPlayerConfiguration { player in
+        player.showsPlaybackControls = false
+    }
 }
 #endif

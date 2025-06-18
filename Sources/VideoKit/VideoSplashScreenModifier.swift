@@ -188,8 +188,11 @@ private extension View {
     Text("Hello, world")
         .videoSplashScreen(
             videoURL: VideoPlayer.sampleVideoURL,
-            duration: 5
-        ) { player in
-            player.background(Color.black)
-        }
+            duration: 3,
+            content: { $0.background(Color.red) }
+        )
+        .videoSplashScreenConfiguration(.init(
+            contentMode: .fit,
+            dismissAnimation: .linear(duration: 4)
+        ))
 }
