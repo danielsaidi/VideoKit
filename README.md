@@ -16,7 +16,7 @@
 VideoKit is a SwiftUI library with a configurable ``VideoPlayer`` view, and other utilities like a video splash screen.
 
 <p align="center">
-    <img src="https://github.com/danielsaidi/VideoKit/releases/download/0.1.0/VideoKit-Demo.gif" alt="Demo Gif" width="300" />
+    <img src="https://github.com/danielsaidi/VideoKit/releases/download/0.1/VideoKit-Demo-Compressed.gif" alt="Demo Gif" width="300" />
 </p>
 
 Unlike the AVKit VideoPlayer, VideoKit's ``VideoPlayer`` can be configured to creat extend, and the video splash screen utilities make it easy to create a video splash screen that plays when your app launches.
