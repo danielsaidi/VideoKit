@@ -12,5 +12,6 @@ This is the first public release of VideoKit.
 
 ### ✨ New Features
 
-* The `VideoPlayer` view can be used to play videos.
-* The `VideoSplashScreenModifier` can be used to show brief video splash screens.
+* `SampleVideo` can provide sample videos.
+* `VideoPlayer` view can be used to play videos.
+* `VideoSplashScreenModifier` can be used to show brief video splash screens.
