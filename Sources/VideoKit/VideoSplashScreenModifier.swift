@@ -6,6 +6,7 @@
 //  Copyright © 2025 Daniel Saidi. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS) || targetEnvironment(macCatalyst) || os(visionOS)
 import SwiftUI
 
 /// This view modifier adds a video splash screen to a view.
@@ -196,3 +197,4 @@ private extension View {
             dismissAnimation: .linear(duration: 4)
         ))
 }
+#endif

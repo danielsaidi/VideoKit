@@ -13,13 +13,13 @@
 
 # VideoKit
 
-VideoKit is a SwiftUI library with a configurable `VideoPlayer` and other video-related utilities like a video splash screen.
+VideoKit is a SwiftUI library with a configurable ``VideoPlayer`` view, and other utilities like a video splash screen.
 
 <p align="center">
     <img src="https://github.com/danielsaidi/VideoKit/releases/download/0.1.0/VideoKit-Demo.gif" alt="Demo Gif" width="300" />
 </p>
 
-Unlike the `AVKit.VideoPlayer`, VideoKit's `VideoPlayer` can be configured to greater extent, by providing you with the underlying `AVPlayerViewController`.
+Unlike the AVKit VideoPlayer, VideoKit's ``VideoPlayer`` can be configured to creat extend, and the video splash screen utilities make it easy to create a video splash screen that plays when your app launches.
 
 
 
@@ -32,6 +32,13 @@ https://github.com/danielsaidi/VideoKit.git
 ```
 
 
+
+## Supported Platforms
+
+VideoKit supports iOS, iPadOS, macOS Catalyst, tvOS, and visionOS.
+
+
+
 ## Support My Work
 
 You can [become a sponsor][Sponsors] to help me dedicate more time on my various [open-source tools][OpenSource]. Every contribution, no matter the size, makes a real difference in keeping these tools free and actively developed.
@@ -39,6 +46,8 @@ You can [become a sponsor][Sponsors] to help me dedicate more time on my various
 
 
 ## Getting Started
+
+### Video Player
 
 To add a video player to your app, just add a `VideoPlayer` to any view, and use the `.videoPlayerConfiguration` view modifier to configure it:
 
@@ -59,6 +68,8 @@ struct MyView: View {
     }
 }
 ```
+
+### Video Splash Screen
 
 To add a video splash screen to your app, like in many of the major video streaming apps, just apply the `.videoSplashScreen` view modifier to the root view of your app:
 
@@ -83,7 +94,7 @@ struct ContentView: View {
 }
 ```
 
-See the online [documentation][Documentation] for more information.
+The splash screen will automatically dismiss when the video stops playing.
 
 
 
@@ -95,7 +106,7 @@ The online [documentation][Documentation] has more information, articles, code e
 
 ## Demo Application
 
-The `Demo` folder has a demo app that lets you explore the library and integrate with a few APIs.
+The `Demo` folder has a demo app that lets you explore the library.
 
 
 
