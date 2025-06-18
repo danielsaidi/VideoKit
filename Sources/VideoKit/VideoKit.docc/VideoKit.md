@@ -11,8 +11,6 @@ VideoKit is a SwiftUI library with a configurable ``VideoPlayer`` view, as well 
 
 Unlike AVKit's VideoPlayer, VideoKit's ``VideoPlayer`` can be configured to creat extend, and the video splash screen utilities make it easy to create a video splash screen that plays when your app launches.
 
-VideoKit supports iOS, iPadOS, macOS Catalyst, tvOS, and visionOS.
-
 
 
 ## Installation
@@ -22,6 +20,14 @@ VideoKit can be installed with the Swift Package Manager:
 ```
 https://github.com/danielsaidi/VideoKit.git
 ```
+
+> Important: For remote playback to work in macOS Catalyst, you must enable "Outgoing Connections (Client)" under "Signing & Capabilities > App Sandbox" and enable "App Transport Security Settings > Allow Arbitrary Loads" (for more security, specify allowed domains) under the app's "Info" configuration.
+
+
+
+## Supported Platforms
+
+VideoKit supports iOS 15, iPadOS 15, macOS 12 Catalyst, tvOS 15, and visionOS 1.
 
 
 

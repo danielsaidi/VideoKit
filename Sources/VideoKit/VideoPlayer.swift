@@ -71,8 +71,12 @@ public extension VideoPlayer {
 
     /// A sample video URL that can be used to test the view.
     static var sampleVideoURL: URL? {
-        let url = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-        return URL(string: url)
+        .init(string: sampleVideoURLString)
+    }
+
+    /// A sample video URL that can be used to test the view.
+    static var sampleVideoURLString: String {
+        "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4"
     }
 }
 
