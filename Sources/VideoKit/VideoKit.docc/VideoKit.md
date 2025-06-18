@@ -89,6 +89,11 @@ struct ContentView: View {
 The splash screen will automatically dismiss when the video stops playing.
 
 
+### Sample Videos
+
+The library comes with a ``SampleVideo`` type that can be used to test the player, and a ``SampleVideo/librarySampleVideos`` collection that is parsed from a JSON file that is embedded within the library.
+
+
 
 ## Demo Application
 
@@ -115,6 +120,10 @@ VideoKit is available under the MIT license.
 - ``VideoPlayer``
 - ``VideoPlayerController``
 - ``VideoSplashScreenModifier``
+
+### Samples
+
+- ``SampleVideo``
 
 
 
