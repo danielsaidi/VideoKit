@@ -6,6 +6,18 @@ Until then, breaking changes can happen in any version, and deprecations may be 
 
 
 
+## 0.3
+
+This update simplifies how you can configure a video player and its underlying controller.
+
+### ✨ New Features
+
+* `VideoPlayer` now lets you inject a player configuration in the initializer.
+* `VideoPlayer` now lets you inject a controller configuration in the initializer.
+* `VideoPlayerConfiguration` can be used to configure player-specific things, like auto-play.
+
+
+
 ## 0.2
 
 This update simplifies how you set up a video splash screen.

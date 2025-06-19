@@ -90,16 +90,19 @@ struct ContentView: View {
 }
 ```
 
-You can apply a ``.videoPlayerConfiguration(...)`` view modifier to configure the video player:
+You can inject a ``VideoPlayerConfiguration`` and a controller configuration to customize the player and its underlying controller:
 
 ```swift
 struct ContentView: View {
 
     var body: some View {
-        VideoPlayer(videoURL: VideoPlayer.sampleVideoURL)
-            .videoPlayerConfiguration { controller in
+        VideoPlayer(
+            videoURL: VideoPlayer.sampleVideoURL,
+            configuration: .init(autoPlay: false),
+            controllerConfiguration: { controller in
                 controller.showsPlaybackControls = false
             }
+        )
     }
 }
 ```

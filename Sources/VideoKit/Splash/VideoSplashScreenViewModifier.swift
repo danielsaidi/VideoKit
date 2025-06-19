@@ -85,9 +85,6 @@ public struct VideoSplashScreenViewModifier<VideoPlayerView: View>: ViewModifier
                     .task(after: config.maxDisplayDuration) {
                         dismissSplashScreen()
                     }
-                    .videoPlayerConfiguration { controller in
-                        controller.showsPlaybackControls = false
-                    }
                     .overlay(playerView)
             }
         }
@@ -100,6 +97,9 @@ private extension VideoSplashScreenViewModifier {
         videoPlayerView(
             VideoPlayer(
                 videoURL: videoURL,
+                controllerConfiguration: { controller in
+                    controller.showsPlaybackControls = false
+                },
                 didPlayToEndAction: dismissSplashScreen
             )
         )
@@ -141,7 +141,7 @@ public struct VideoSplashScreenConfiguration: Sendable {
 
 public extension VideoSplashScreenConfiguration {
 
-    /// The standard video splash screen style.
+    /// The standard video splash screen configuration.
     static let standard = Self()
 }
 

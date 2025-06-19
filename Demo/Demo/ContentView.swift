@@ -20,7 +20,8 @@ struct ContentView: View {
             ScrollView(.vertical) {
                 LazyVGrid(columns: gridColums) {
                     ForEach(sampleVideos) { sampleVideo in
-                        listItem(for: sampleVideo)
+                        // listItem(for: sampleVideo)
+                        videoListItem(for: sampleVideo)
                     }
                 }
             }
@@ -69,12 +70,31 @@ extension ContentView {
         .multilineTextAlignment(.leading)
     }
 
+    func videoListItem(for video: SampleVideo) -> some View {
+        VStack(alignment: .leading) {
+            VideoPlayer(
+                videoURL: video.videoUrl,
+                configuration: .list,
+                controllerConfiguration: { controller in
+                    // Configure the underlying controller here
+                }
+            )
+            .aspectRatio(contentMode: .fit)
+            .clipShape(.rect(cornerRadius: 10))
+            Text(video.title).font(.title)
+            Text(video.subtitle).foregroundColor(.primary)
+        }
+        .padding()
+        .multilineTextAlignment(.leading)
+    }
+
     func videoPlayer(for video: SampleVideo) -> some View {
-        VideoPlayer(videoURL: video.videoUrl)
-            .ignoresSafeArea()
-            .videoPlayerConfiguration { controller in
-                // Configure player here...
+        VideoPlayer(
+            videoURL: video.videoUrl,
+            controllerConfiguration: { controller in
+                // Configure the underlying controller here
             }
+        )
     }
 }
 
