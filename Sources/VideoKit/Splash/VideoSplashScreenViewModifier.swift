@@ -110,7 +110,7 @@ private extension VideoSplashScreenViewModifier {
 private extension VideoSplashScreenViewModifier {
 
     func dismissSplashScreen() {
-        withAnimation {
+        withAnimation(config.dismissAnimation) {
             isSplashScreenActive = false
         }
     }
@@ -209,12 +209,56 @@ private extension View {
     }
 }
 
-#Preview {
+#Preview("Documentation #1") {
 
-    Text("Hello, world")
-        .videoSplashScreen(
-            videoURL: VideoPlayer.sampleVideoURL,
-            videoPlayerView: { $0.background(Color.red) }
-        )
+    struct ContentView: View {
+
+        var body: some View {
+            Text("Hello, world")
+                .videoSplashScreen(
+                    videoURL: VideoPlayer.sampleVideoURL
+                )
+        }
+    }
+
+    return ContentView()
+}
+
+#Preview("Documentation #2") {
+
+    struct ContentView: View {
+
+        var body: some View {
+            Text("Hello, world")
+                .videoSplashScreen(
+                    videoURL: VideoPlayer.sampleVideoURL,
+                    configuration: .init(
+                        dismissAnimation: .linear(duration: 2),
+                        maxDisplayDuration: 2
+                    )
+                )
+        }
+    }
+
+    return ContentView()
+}
+
+#Preview("Documentation #3") {
+
+    struct ContentView: View {
+
+        var body: some View {
+            Text("Hello, world")
+                .videoSplashScreen(
+                    videoURL: VideoPlayer.sampleVideoURL,
+                    videoPlayerView: { videoPlayer in
+                        Color.red
+                        videoPlayer.aspectRatio(contentMode: .fit)
+                    }
+                )
+        }
+    }
+
+    return ContentView()
 }
 #endif

@@ -107,13 +107,53 @@ public extension View {
     }
 }
 
-#Preview {
-    VideoPlayer(
-        videoURL: VideoPlayer.sampleVideoURL
-    )
-    .aspectRatio(16/9, contentMode: .fit)
-    .videoPlayerConfiguration { player in
-        player.showsPlaybackControls = false
+#Preview("Documentation #1") {
+    struct ContentView: View {
+
+        var body: some View {
+            VideoPlayer(videoURL: VideoPlayer.sampleVideoURL)
+                .aspectRatio(16/9, contentMode: .fit)
+        }
     }
+
+    return ContentView()
+}
+
+#Preview("Documentation #2") {
+    struct ContentView: View {
+
+        @State var isVideoPresented = false
+        @State var videoTime = TimeInterval.zero
+
+        var body: some View {
+            Button("Play video") {
+                isVideoPresented = true
+            }
+            .fullScreenCover(isPresented: $isVideoPresented) {
+                VideoPlayer(
+                    videoURL: VideoPlayer.sampleVideoURL,
+                    time: $videoTime,
+                    didPlayToEndAction: { isVideoPresented = false }
+                )
+                .ignoresSafeArea()
+            }
+        }
+    }
+
+    return ContentView()
+}
+
+#Preview("Documentation #3") {
+    struct ContentView: View {
+
+        var body: some View {
+            VideoPlayer(videoURL: VideoPlayer.sampleVideoURL)
+                .videoPlayerConfiguration { controller in
+                    controller.showsPlaybackControls = false
+                }
+        }
+    }
+
+    return ContentView()
 }
 #endif

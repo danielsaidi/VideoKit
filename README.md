@@ -19,7 +19,9 @@ VideoKit is a SwiftUI library with a configurable ``VideoPlayer`` view, and othe
     <img src="https://github.com/danielsaidi/VideoKit/releases/download/0.1/VideoKit-Demo-Compressed.gif" alt="Demo Gif" width="300" />
 </p>
 
-Unlike the AVKit VideoPlayer, VideoKit's ``VideoPlayer`` can be configured to creat extend, and the video splash screen utilities make it easy to create a video splash screen that plays when your app launches.
+Unlike AVKit's VideoPlayer, VideoKit's ``VideoPlayer`` can be configured to great extent. It also lets you observe the current player time and can trigger a custom action when the player reaches the end.
+
+VideoKit can also add customizable, video-based splash screens to your app. This makes it easy to add powerful launch effects, like we see in many video streaming apps.
 
 
 
@@ -52,52 +54,116 @@ You can [become a sponsor][Sponsors] to help me dedicate more time on my various
 
 ### Video Player
 
-To add a video player to your app, just add a `VideoPlayer` to any view, and use the `.videoPlayerConfiguration` view modifier to configure it:
+To add video content to your app, just add a ``VideoPlayer`` with a URL to the content you want to play:
 
 ```swift
-import SwiftUI
-import VideoKit
-
-struct MyView: View {
+struct ContentView: View {
 
     var body: some View {
-        VideoPlayer(
-            videoURL: VideoPlayer.sampleVideoURL
-        )
-        .aspectRatio(16/9, contentMode: .fit)
-        .videoPlayerConfiguration { player in
-            player.showsPlaybackControls = false
+        VideoPlayer(videoURL: VideoPlayer.sampleVideoURL)
+            .aspectRatio(16/9, contentMode: .fit)
+    }
+}
+```
+
+You can injecting a `time` binding, and trigger an action when the video stops playing:
+
+```swift
+struct ContentView: View {
+
+    @State var isVideoPresented = false
+    @State var videoTime = TimeInterval.zero
+
+    var body: some View {
+        Button("Play video") {
+            isVideoPresented = true
+        }
+        .fullScreenCover(isPresented: $isVideoPresented) {
+            VideoPlayer(
+                videoURL: VideoPlayer.sampleVideoURL,
+                time: $videoTime,
+                didPlayToEndAction: { isVideoPresented = false }
+            )
+            .ignoresSafeArea()
         }
     }
 }
 ```
 
-### Video Splash Screen
-
-To add a video splash screen to your app, like in many of the major video streaming apps, just apply the `.videoSplashScreen` view modifier to the root view of your app:
+You can apply a ``.videoPlayerConfiguration(...)`` view modifier to configure the video player:
 
 ```swift
-import SwiftUI
-import VideoKit
+struct ContentView: View {
 
+    var body: some View {
+        VideoPlayer(videoURL: VideoPlayer.sampleVideoURL)
+            .videoPlayerConfiguration { controller in
+                controller.showsPlaybackControls = false
+            }
+    }
+}
+```
+
+These options make it easy to add powerful video-based features to your app.  
+
+
+### Video Splash Screen
+
+VideoKit makes it easy to add a video-based splash screen to your app, that is automatically presented on launch and dismissed when the embedded video stops playing.
+
+To add a video splash screen to your app, just add a ``.videoSplashScreen(videoURL:configuration:)`` view modifier to your app's root view:
+
+```swift
+struct ContentView: View {
+
+    var body: some View {
+        Text("Hello, world")
+            .videoSplashScreen(
+                videoURL: VideoPlayer.sampleVideoURL
+            )
+    }
+}
+```
+
+You can pass in a ``VideoSplashScreenConfiguration`` to customize the splash screen:
+
+```swift
 struct ContentView: View {
 
     var body: some View {
         Text("Hello, world")
             .videoSplashScreen(
                 videoURL: VideoPlayer.sampleVideoURL,
-                duration: 3,
-                content: { $0.background(Color.red) }
+                configuration: .init(
+                    dismissAnimation: .linear(duration: 2),
+                    maxDisplayDuration: 2
+                )
             )
-            .videoSplashScreenConfiguration(.init(
-                contentMode: .fit,
-                dismissAnimation: .linear(duration: 4)
-            ))
     }
 }
 ```
 
-The splash screen will automatically dismiss when the video stops playing.
+You can also customize the video player view, for instance to add a custom background view to it:
+
+
+```swift
+struct ContentView: View {
+
+    var body: some View {
+        Text("Hello, world")
+            .videoSplashScreen(
+                videoURL: VideoPlayer.sampleVideoURL,
+                videoPlayerView: { videoPlayer in
+                    Color.red
+                    videoPlayer.aspectRatio(contentMode: .fit)
+                }
+            )
+    }
+}
+```
+
+These options make it easy to add customizable video splash screens to your app.
+
 
 
 ### Sample Videos
