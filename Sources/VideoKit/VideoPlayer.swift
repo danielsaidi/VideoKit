@@ -37,7 +37,7 @@ public struct VideoPlayer: UIViewControllerRepresentable {
         videoURL: URL?,
         time: Binding<Double>? = nil,
         configuration: VideoPlayerConfiguration = .standard,
-        controllerConfiguration: @escaping (VideoPlayerController) -> () = { _ in },
+        controllerConfiguration: @escaping (VideoPlayerController) -> Void = { _ in },
         didPlayToEndAction: Action? = nil
     ) {
         self.videoURL = videoURL
@@ -54,7 +54,7 @@ public struct VideoPlayer: UIViewControllerRepresentable {
     private let videoURL: URL?
     private let time: Binding<Double>?
     private let configuration: VideoPlayerConfiguration
-    private let controllerConfiguration: (VideoPlayerController) -> ()
+    private let controllerConfiguration: (VideoPlayerController) -> Void
     private let didPlayToEndAction: Action?
 }
 
