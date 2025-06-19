@@ -10,8 +10,13 @@ import VideoKit
 
 struct ContentView: View {
 
+    enum VideoMode: String { case inline, modal }
+
     @State var sampleVideos: [SampleVideo] = []
     @State var selection: SampleVideo?
+
+    @AppStorage("LaunchVideo") var isVideoSplashScreenEnabled = true
+    @AppStorage("VideoMode") var videoMode = VideoMode.modal
 
     let gridColums: [GridItem] = [.init(.adaptive(minimum: 450, maximum: 1_000))]
 
@@ -20,8 +25,10 @@ struct ContentView: View {
             ScrollView(.vertical) {
                 LazyVGrid(columns: gridColums) {
                     ForEach(sampleVideos) { sampleVideo in
-                        // listItem(for: sampleVideo)
-                        videoListItem(for: sampleVideo)
+                        switch videoMode {
+                        case .inline: videoListItem(for: sampleVideo)
+                        case .modal: thumbnailListItem(for: sampleVideo)
+                        }
                     }
                 }
             }
@@ -29,10 +36,27 @@ struct ContentView: View {
             .fullScreenCover(item: $selection) { sampleVideo in
                 videoPlayer(for: sampleVideo)
             }
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Menu {
+                        Toggle("Launch Video", isOn: $isVideoSplashScreenEnabled)
+                        Section {
+                            Picker("Video Mode", selection: $videoMode) {
+                                Text("Modal Videos").tag(VideoMode.modal)
+                                Text("Inline Videos").tag(VideoMode.inline)
+                            }
+                        }
+                    } label: {
+                        Label("Menu", systemImage: "gear")
+                            .labelStyle(.iconOnly)
+                    }
+                }
+            }
         }
         .task { fetchSampleVideos() }
         .videoSplashScreen(
             videoURL: videoSplashUrl,
+            isEnabled: isVideoSplashScreenEnabled,
             configuration: .demo,
             videoPlayerView: { videoPlayer in
                 ZStack {
@@ -55,23 +79,18 @@ extension ContentView {
         sampleVideos = videos ?? []
     }
 
-    func listItem(for video: SampleVideo) -> some View {
+    func thumbnailListItem(for video: SampleVideo) -> some View {
         Button {
             selection = video
         } label: {
-            VStack(alignment: .leading) {
+            DemoListItem(video: video) { video in
                 RobustAsyncImage(url: video.thumbnailUrl)
-                    .clipShape(.rect(cornerRadius: 10))
-                Text(video.title).font(.title)
-                Text(video.subtitle).foregroundColor(.primary)
             }
         }
-        .padding()
-        .multilineTextAlignment(.leading)
     }
 
     func videoListItem(for video: SampleVideo) -> some View {
-        VStack(alignment: .leading) {
+        DemoListItem(video: video) { video in
             VideoPlayer(
                 videoURL: video.videoUrl,
                 configuration: .list,
@@ -79,13 +98,8 @@ extension ContentView {
                     // Configure the underlying controller here
                 }
             )
-            .aspectRatio(contentMode: .fit)
-            .clipShape(.rect(cornerRadius: 10))
-            Text(video.title).font(.title)
-            Text(video.subtitle).foregroundColor(.primary)
+            .aspectRatio(16/9, contentMode: .fit)
         }
-        .padding()
-        .multilineTextAlignment(.leading)
     }
 
     func videoPlayer(for video: SampleVideo) -> some View {

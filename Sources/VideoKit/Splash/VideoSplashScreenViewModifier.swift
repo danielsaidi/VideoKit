@@ -156,16 +156,19 @@ public extension View {
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play.
+    ///   - isEnabled: Whether the splash screen is enabled, by default `true`.
     ///   - configuration: The configuration to apply, by default ``VideoSplashScreenConfiguration/standard``.
+    @ViewBuilder
     func videoSplashScreen(
         videoURL: URL?,
+        isEnabled: Bool = true,
         configuration: VideoSplashScreenConfiguration? = nil
     ) -> some View {
-        self.modifier(
-            VideoSplashScreenViewModifier(
-                videoURL: videoURL,
-                configuration: configuration
-            )
+        self.videoSplashScreen(
+            videoURL: videoURL,
+            isEnabled: isEnabled,
+            configuration: configuration,
+            videoPlayerView: { $0 }
         )
     }
 
@@ -178,20 +181,27 @@ public extension View {
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play.
+    ///   - isEnabled: Whether the splash screen is enabled, by default `true`.
     ///   - configuration: The configuration to apply, by default ``VideoSplashScreenConfiguration/standard``.
     ///   - videoPlayerView: A custom video player content builder.
+    @ViewBuilder
     func videoSplashScreen<VideoPlayerView: View>(
         videoURL: URL?,
+        isEnabled: Bool = true,
         configuration: VideoSplashScreenConfiguration? = nil,
         @ViewBuilder videoPlayerView: @escaping (VideoPlayer) -> VideoPlayerView
     ) -> some View {
-        self.modifier(
-            VideoSplashScreenViewModifier(
-                videoURL: videoURL,
-                configuration: configuration,
-                videoPlayerView: videoPlayerView
+        if isEnabled {
+            self.modifier(
+                VideoSplashScreenViewModifier(
+                    videoURL: videoURL,
+                    configuration: configuration,
+                    videoPlayerView: videoPlayerView
+                )
             )
-        )
+        } else {
+            self
+        }
     }
 }
 

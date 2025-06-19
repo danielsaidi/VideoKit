@@ -15,6 +15,7 @@ This update simplifies how you can configure a video player and its underlying c
 * `VideoPlayer` now lets you inject a player configuration in the initializer.
 * `VideoPlayer` now lets you inject a controller configuration in the initializer.
 * `VideoPlayerConfiguration` can be used to configure player-specific things, like auto-play.
+* `.videoSplashScreen(...)` now allows you to pass in an `isEnabled` argument to conditionally enable the splash screen.
 
 
 
