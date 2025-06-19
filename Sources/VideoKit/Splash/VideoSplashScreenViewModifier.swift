@@ -36,16 +36,13 @@ public struct VideoSplashScreenViewModifier<VideoPlayerView: View>: ViewModifier
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play.
-    ///   - duration: The video duration.
     ///   - configuration: The configuration to apply, by default ``VideoSplashScreenConfiguration/standard``.
     public init(
         videoURL: URL?,
-        duration: TimeInterval,
         configuration: VideoSplashScreenConfiguration? = nil
     ) where VideoPlayerView == VideoPlayer {
         self.init(
             videoURL: videoURL,
-            duration: duration,
             configuration: configuration,
             videoPlayerView: { $0 }
         )
@@ -56,23 +53,19 @@ public struct VideoSplashScreenViewModifier<VideoPlayerView: View>: ViewModifier
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play.
-    ///   - duration: The video splash duration.
     ///   - configuration: The configuration to apply, by default ``VideoSplashScreenConfiguration/standard``.
     ///   - videoPlayerView: A custom video player view builder.
     public init(
         videoURL: URL?,
-        duration: TimeInterval,
         configuration: VideoSplashScreenConfiguration? = nil,
         @ViewBuilder videoPlayerView: @escaping (VideoPlayer) -> VideoPlayerView
     ) {
         self.videoURL = videoURL
-        self.videoDuration = duration
         self.config = configuration ?? .standard
         self.videoPlayerView = videoPlayerView
     }
 
     private let videoURL: URL?
-    private let videoDuration: TimeInterval
     private let config: VideoSplashScreenConfiguration
     private let videoPlayerView: (VideoPlayer) -> VideoPlayerView
 
@@ -85,22 +78,27 @@ public struct VideoSplashScreenViewModifier<VideoPlayerView: View>: ViewModifier
             content
                 .zIndex(0)
             if isSplashScreenActive {
-                videoPlayerView(.init(videoURL: videoURL))
+                videoPlayerView(.init(videoURL: videoURL, didPlayToEndAction: dismissSplashScreen))
                     .zIndex(1)
                     .ignoresSafeArea()
                     .aspectRatio(contentMode: config.videoContentMode)
                     .animation(config.dismissAnimation, value: isSplashScreenActive)
                     .transition(.opacity)
-                    .task(after: videoDuration) {
-                        withAnimation {
-                            isSplashScreenActive = false
-                        }
+                    .task(after: config.maxDisplayDuration) {
+                        withAnimation { dismissSplashScreen() }
                     }
                     .videoPlayerConfiguration { controller in
                         controller.showsPlaybackControls = false
                     }
             }
         }
+    }
+}
+
+private extension VideoSplashScreenViewModifier {
+
+    func dismissSplashScreen() {
+        isSplashScreenActive = false
     }
 }
 
@@ -112,7 +110,7 @@ public struct VideoSplashScreenConfiguration: Sendable {
     /// - Parameters:
     ///   - videoContentMode: The video content mode to use, by default `.fill`.
     ///   - dismissAnimation: The dismiss animation to use, by default `.linear(duration: 1)`.
-    ///   - maxDisplayDuration: The max time that the splash screen will be visible, by default `10` seconds.
+    ///   - maxDisplayDuration: The max seconds that the splash screen is presented, by default `10`.
     public init(
         videoContentMode: ContentMode = .fill,
         dismissAnimation: Animation = .linear(duration: 1),
@@ -123,8 +121,13 @@ public struct VideoSplashScreenConfiguration: Sendable {
         self.maxDisplayDuration = maxDisplayDuration
     }
 
+    /// The video content mode to use.
     public var dismissAnimation: Animation
+
+    /// The dismiss animation to use.
     public var videoContentMode: ContentMode
+
+    /// The max seconds that the splash screen is presented.
     public var maxDisplayDuration: TimeInterval
 }
 
@@ -145,17 +148,14 @@ public extension View {
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play.
-    ///   - duration: The video splash duration.
     ///   - configuration: The configuration to apply, by default ``VideoSplashScreenConfiguration/standard``.
     func videoSplashScreen(
         videoURL: URL?,
-        duration: TimeInterval,
         configuration: VideoSplashScreenConfiguration? = nil
     ) -> some View {
         self.modifier(
             VideoSplashScreenViewModifier(
                 videoURL: videoURL,
-                duration: duration,
                 configuration: configuration
             )
         )
@@ -170,19 +170,16 @@ public extension View {
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play.
-    ///   - duration: The video splash duration.
     ///   - configuration: The configuration to apply, by default ``VideoSplashScreenConfiguration/standard``.
     ///   - videoPlayerView: A custom video player content builder.
     func videoSplashScreen<VideoPlayerView: View>(
         videoURL: URL?,
-        duration: TimeInterval,
         configuration: VideoSplashScreenConfiguration? = nil,
         @ViewBuilder videoPlayerView: @escaping (VideoPlayer) -> VideoPlayerView
     ) -> some View {
         self.modifier(
             VideoSplashScreenViewModifier(
                 videoURL: videoURL,
-                duration: duration,
                 configuration: configuration,
                 videoPlayerView: videoPlayerView
             )
@@ -209,7 +206,6 @@ private extension View {
     Text("Hello, world")
         .videoSplashScreen(
             videoURL: VideoPlayer.sampleVideoURL,
-            duration: 3,
             videoPlayerView: { $0.background(Color.red) }
         )
 }
