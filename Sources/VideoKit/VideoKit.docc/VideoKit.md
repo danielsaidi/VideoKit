@@ -119,9 +119,13 @@ VideoKit is available under the MIT license.
 
 - ``VideoPlayer``
 - ``VideoPlayerController``
-- ``VideoSplashScreenModifier``
 
-### Samples
+### Video Splash Screen
+
+- ``VideoSplashScreenConfiguration``
+- ``VideoSplashScreenViewModifier``
+
+### Videos
 
 - ``SampleVideo``
 
