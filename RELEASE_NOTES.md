@@ -18,7 +18,7 @@ This update simplifies how you set up a video splash screen.
 
 ### 🐛 Bug fixes
 
-* The splash screen dismiss animation now works properly.  
+* The splash screen dismiss animation now works properly. 
 
 
 

@@ -82,7 +82,6 @@ extension VideoSplashScreenConfiguration {
 
     static var demo: Self {
         VideoSplashScreenConfiguration(
-            videoContentMode: .fit,
             dismissAnimation: .linear(duration: 2)
         )
     }
