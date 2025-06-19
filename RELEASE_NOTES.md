@@ -6,6 +6,22 @@ Until then, breaking changes can happen in any version, and deprecations may be 
 
 
 
+## 0.2
+
+This update simplifies how you set up a video splash screen.
+
+### 💡 Adjustments
+
+* You can now apply a custom background view to the splash screen.  
+* You can now apply a custom splash screen style in the view modifier.
+* `VideoSplashScreenConfiguration` is renamed to `VideoSplashScreenStyle`.
+
+### 🐛 Bug fixes
+
+* The splash screen dismiss animation now works properly.  
+
+
+
 ## 0.1
 
 This is the first public release of VideoKit.

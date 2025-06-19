@@ -16,8 +16,9 @@ import SwiftUI
 /// time it may take for the video to be downloaded. As such,
 /// this view is best used with local video files.
 ///
-/// You can configure the view by applying the view modifier
-/// ``SwiftUICore/View/videoSplashScreen(videoURL:duration:)``. 
+/// You can add a video splash screen to a view by using the
+/// ``SwiftUICore/View/videoSplashScreen(videoURL:duration:)``
+/// view modifier.
 public struct VideoSplashScreenModifier<VideoPlayerView: View>: ViewModifier {
 
     /// Create a video splash screen that uses the raw video
@@ -67,16 +68,19 @@ public struct VideoSplashScreenModifier<VideoPlayerView: View>: ViewModifier {
     ) -> some View {
         ZStack {
             content
+                .zIndex(0)
             if isSplashScreenActive {
                 videoPlayerView(.init(videoURL: videoURL))
+                    .zIndex(1)
                     .ignoresSafeArea()
                     .aspectRatio(contentMode: config.contentMode)
                     .videoPlayerConfiguration { controller in
                         controller.showsPlaybackControls = false
                     }
+                    .animation(config.dismissAnimation, value: isSplashScreenActive)
                     .transition(.opacity)
                     .task(after: videoDuration) {
-                        withAnimation(config.dismissAnimation) {
+                        withAnimation {
                             isSplashScreenActive = false
                         }
                     }
@@ -91,10 +95,10 @@ public struct VideoSplashScreenConfiguration: Sendable {
     /// Create a custom video splash screen configuration.
     ///
     /// - Parameters:
-    ///   - contentMode: The content mode to apply to the player, by default `.fill`.
+    ///   - contentMode: The content mode to apply to the player, by default `.fit`.
     ///   - dismissAnimation: The dismiss animation to use, by default `.linear(duration: 1)`.
     public init(
-        contentMode: ContentMode = .fill,
+        contentMode: ContentMode = .fit,
         dismissAnimation: Animation = .linear(duration: 1)
     ) {
         self.contentMode = contentMode

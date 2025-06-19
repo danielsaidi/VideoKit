@@ -46,6 +46,14 @@ struct ContentView: View {
             let videos = try? SampleVideo.librarySampleVideos
             sampleVideos = videos ?? []
         }
+        .videoSplashScreen(videoURL: videoSplashUrl, duration: 5)
+    }
+}
+
+extension ContentView {
+
+    var videoSplashUrl: URL? {
+        Bundle.main.url(forResource: "DemoSplash", withExtension: "mp4")
     }
 }
 
