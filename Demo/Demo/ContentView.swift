@@ -13,40 +13,33 @@ struct ContentView: View {
     @State var sampleVideos: [SampleVideo] = []
     @State var selection: SampleVideo?
 
+    let gridColums: [GridItem] = [.init(.adaptive(minimum: 450, maximum: 1_000))]
+
     var body: some View {
         NavigationStack {
             ScrollView(.vertical) {
-                LazyVGrid(columns: [.init(.adaptive(minimum: 450, maximum: 1_000))]) {
-                    ForEach(sampleVideos) { video in
-                        Button {
-                            selection = video
-                        } label: {
-                            VStack(alignment: .leading) {
-                                RobustAsyncImage(url: video.thumbnailUrl)
-                                    .clipShape(.rect(cornerRadius: 10))
-                                Text(video.title).font(.title)
-                                Text(video.subtitle).foregroundColor(.primary)
-                            }
-                        }
-                        .padding()
-                        .multilineTextAlignment(.leading)
+                LazyVGrid(columns: gridColums) {
+                    ForEach(sampleVideos) { sampleVideo in
+                        listItem(for: sampleVideo)
                     }
                 }
             }
             .navigationTitle("Demo")
-            .fullScreenCover(item: $selection) { sample in
-                VideoPlayer(videoURL: sample.videoUrl)
-                    .ignoresSafeArea()
-                    .videoPlayerConfiguration { controller in
-                        // Configure player here...
-                    }
+            .fullScreenCover(item: $selection) { sampleVideo in
+                videoPlayer(for: sampleVideo)
             }
         }
-        .task {
-            let videos = try? SampleVideo.librarySampleVideos
-            sampleVideos = videos ?? []
-        }
-        .videoSplashScreen(videoURL: videoSplashUrl, duration: 5)
+        .task { fetchSampleVideos() }
+        .videoSplashScreen(
+            videoURL: videoSplashUrl,
+            configuration: .demo,
+            videoPlayerView: { videoPlayer in
+                ZStack {
+                    Color.black
+                    videoPlayer
+                }
+            }
+        )
     }
 }
 
@@ -54,6 +47,44 @@ extension ContentView {
 
     var videoSplashUrl: URL? {
         Bundle.main.url(forResource: "DemoSplash", withExtension: "mp4")
+    }
+
+    func fetchSampleVideos() {
+        let videos = try? SampleVideo.librarySampleVideos
+        sampleVideos = videos ?? []
+    }
+
+    func listItem(for video: SampleVideo) -> some View {
+        Button {
+            selection = video
+        } label: {
+            VStack(alignment: .leading) {
+                RobustAsyncImage(url: video.thumbnailUrl)
+                    .clipShape(.rect(cornerRadius: 10))
+                Text(video.title).font(.title)
+                Text(video.subtitle).foregroundColor(.primary)
+            }
+        }
+        .padding()
+        .multilineTextAlignment(.leading)
+    }
+
+    func videoPlayer(for video: SampleVideo) -> some View {
+        VideoPlayer(videoURL: video.videoUrl)
+            .ignoresSafeArea()
+            .videoPlayerConfiguration { controller in
+                // Configure player here...
+            }
+    }
+}
+
+extension VideoSplashScreenConfiguration {
+
+    static var demo: Self {
+        VideoSplashScreenConfiguration(
+            videoContentMode: .fit,
+            dismissAnimation: .linear(duration: 2)
+        )
     }
 }
 

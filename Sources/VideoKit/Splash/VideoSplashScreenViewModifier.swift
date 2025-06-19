@@ -78,18 +78,17 @@ public struct VideoSplashScreenViewModifier<VideoPlayerView: View>: ViewModifier
             content
                 .zIndex(0)
             if isSplashScreenActive {
-                videoPlayerView(.init(videoURL: videoURL, didPlayToEndAction: dismissSplashScreen))
+                Color.clear
                     .zIndex(1)
-                    .ignoresSafeArea()
-                    .aspectRatio(contentMode: config.videoContentMode)
                     .animation(config.dismissAnimation, value: isSplashScreenActive)
                     .transition(.opacity)
                     .task(after: config.maxDisplayDuration) {
-                        withAnimation { dismissSplashScreen() }
+                        dismissSplashScreen()
                     }
                     .videoPlayerConfiguration { controller in
                         controller.showsPlaybackControls = false
                     }
+                    .overlay(playerView)
             }
         }
     }
@@ -97,8 +96,23 @@ public struct VideoSplashScreenViewModifier<VideoPlayerView: View>: ViewModifier
 
 private extension VideoSplashScreenViewModifier {
 
+    @ViewBuilder var playerView: some View {
+        videoPlayerView(
+            VideoPlayer(
+                videoURL: videoURL,
+                didPlayToEndAction: dismissSplashScreen
+            )
+        )
+        .ignoresSafeArea()
+    }
+}
+
+private extension VideoSplashScreenViewModifier {
+
     func dismissSplashScreen() {
-        isSplashScreenActive = false
+        withAnimation {
+            isSplashScreenActive = false
+        }
     }
 }
 
@@ -108,24 +122,18 @@ public struct VideoSplashScreenConfiguration: Sendable {
     /// Create a custom video splash screen configuration.
     ///
     /// - Parameters:
-    ///   - videoContentMode: The video content mode to use, by default `.fill`.
     ///   - dismissAnimation: The dismiss animation to use, by default `.linear(duration: 1)`.
     ///   - maxDisplayDuration: The max seconds that the splash screen is presented, by default `10`.
     public init(
-        videoContentMode: ContentMode = .fill,
         dismissAnimation: Animation = .linear(duration: 1),
         maxDisplayDuration: TimeInterval = 10
     ) {
-        self.videoContentMode = videoContentMode
         self.dismissAnimation = dismissAnimation
         self.maxDisplayDuration = maxDisplayDuration
     }
 
     /// The video content mode to use.
     public var dismissAnimation: Animation
-
-    /// The dismiss animation to use.
-    public var videoContentMode: ContentMode
 
     /// The max seconds that the splash screen is presented.
     public var maxDisplayDuration: TimeInterval

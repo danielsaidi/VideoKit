@@ -10,11 +10,11 @@ Until then, breaking changes can happen in any version, and deprecations may be 
 
 This update simplifies how you set up a video splash screen.
 
-### 💡 Adjustments
+### ✨ New Features
 
-* You can now apply a custom background view to the splash screen.  
-* You can now apply a custom splash screen style in the view modifier.
-* `VideoSplashScreenConfiguration` is renamed to `VideoSplashScreenStyle`.
+* `VideoSplashScreenViewModifier` now automatically dismisses itself when the video stops playing.
+* `VideoSplashScreenViewModifier` has a new configuration argument to customize the splash screen.
+* `VideoSplashScreenConfiguration` has a new `maxDisplayDuration` to safeguard against video bugs.
 
 ### 🐛 Bug fixes
 
