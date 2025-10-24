@@ -1,8 +1,8 @@
 # Release Notes
 
-VideoKit will use semver after 1.0. 
+[TagKit](https://github.com/danielsaidi/TagKit) will use semver after 1.0.
 
-Until then, breaking changes can happen in any version, and deprecations may be removed in any minor version bump.
+Until then, breaking changes can happen in any minor version.
 
 
 

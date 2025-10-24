@@ -9,30 +9,23 @@
 #if os(iOS) || os(tvOS) || targetEnvironment(macCatalyst) || os(visionOS)
 import SwiftUI
 
-/// This view modifier can be used to add video-based splash
-/// screens to any view.
+/// This view modifier can be used to add video-based splash screens to any view.
 ///
-/// A video splash screen will play when a view is presented,
-/// then automatically dismiss to reveal the underlying view
-/// when the video stops playing.
+/// A video splash screen will play when the view is presented,  then automatically
+/// dismiss itself to reveal the underlying view when the video stops playing.
 ///
-/// You can inject a custom ``VideoSplashScreenConfiguration``
-/// to customize the splash screen, and inject a custom view
-/// modifier to customize the ``VideoPlayer`` view.
+/// You can provide a ``VideoSplashScreenConfiguration`` to configure
+/// the splash screen, and a custom view modifier to customize the video player.
 ///
-/// > Note: For now, the splash view duration only takes the
-/// video duration into the consideration, not an additional
-/// time it may take for the video to be downloaded. As such,
-/// this view is best used with local video files.
+/// > Note: For now, the splash view duration only takes the video duration into the
+/// consideration, not an additional time it may take for the video to be downloaded.
+/// As such, this view is best used with local video files.
 ///
-/// You can add a video splash screen to a view by using the
-/// ``SwiftUICore/View/videoSplashScreen(videoURL:duration:style:)``
-/// view modifier, or the view modifier that lets you adjust
-/// the video player before presenting it.
+/// You can use the ``SwiftUICore/View/videoSplashScreen(videoURL:)``
+/// view modifier or any of its variants, to apply a video splash screen to any view.
 public struct VideoSplashScreenViewModifier<VideoPlayerView: View>: ViewModifier {
 
-    /// Create a video splash screen that uses a plain video
-    /// player view as its content.
+    /// Create a video splash screen that uses a plain video player content view.
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play.
@@ -48,8 +41,7 @@ public struct VideoSplashScreenViewModifier<VideoPlayerView: View>: ViewModifier
         )
     }
 
-    /// Create a video splash screen that modifies the video
-    /// player view before presenting it.
+    /// Create a video splash screen with a customized video player content view.
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play.
@@ -147,12 +139,29 @@ public extension VideoSplashScreenConfiguration {
 
 public extension View {
 
-    /// Apply a video splash screen to the view, that uses a
-    /// plain ``VideoPlayer`` view as its content.
+    /// Apply a video splash screen that uses a plain ``VideoPlayer`` view.
     ///
-    /// The splash screen will be presented when the view is
-    /// loaded, then dismiss itself to reveal the underlying
-    /// view once the video finishes playing.
+    /// The splash screen will be presented when the view is loaded and dismiss
+    /// itself to reveal the underlying view once the video finishes playing.
+    ///
+    /// - Parameters:
+    ///   - videoURL: The video URL to play.
+    ///   - isEnabled: Whether the splash screen is enabled, by default `true`.
+    ///   - configuration: The configuration to apply, by default ``VideoSplashScreenConfiguration/standard``.
+    @ViewBuilder
+    func videoSplashScreen(videoURL: URL?) -> some View {
+        self.videoSplashScreen(
+            videoURL: videoURL,
+            isEnabled: true,
+            configuration: nil,
+            videoPlayerView: { $0 }
+        )
+    }
+
+    /// Apply a video splash screen that uses a plain ``VideoPlayer`` view.
+    ///
+    /// The splash screen will be presented when the view is loaded and dismiss
+    /// itself to reveal the underlying view once the video finishes playing.
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play.
@@ -162,7 +171,7 @@ public extension View {
     func videoSplashScreen(
         videoURL: URL?,
         isEnabled: Bool = true,
-        configuration: VideoSplashScreenConfiguration? = nil
+        configuration: VideoSplashScreenConfiguration
     ) -> some View {
         self.videoSplashScreen(
             videoURL: videoURL,
@@ -172,12 +181,10 @@ public extension View {
         )
     }
 
-    /// Apply a video splash screen to the view, that uses a
-    /// modifier ``VideoPlayer`` view as its content.
+    /// Apply a video splash screen that uses a custom ``VideoPlayer`` view.
     ///
-    /// The splash screen will be presented when the view is
-    /// loaded, then dismiss itself to reveal the underlying
-    /// view once the video finishes playing.
+    /// The splash screen will be presented when the view is loaded and dismiss
+    /// itself to reveal the underlying view once the video finishes playing. 
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play.

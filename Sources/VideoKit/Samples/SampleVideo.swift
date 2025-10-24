@@ -8,8 +8,7 @@
 
 import Foundation
 
-/// This struct can be used to create sample videos that can
-/// be used to test video-related features in your app.
+/// This struct can be used to create sample videos when testing video features.
 public struct SampleVideo: Codable, Sendable, Identifiable {
 
     public let id: UUID
@@ -23,8 +22,8 @@ public struct SampleVideo: Codable, Sendable, Identifiable {
 
 public extension SampleVideo {
 
-    /// Parse sample videos from a Google-specific JSON file
-    /// that is embedded within the library.
+    /// Parse sample videos from a Google-specific JSON file that is embedded
+    /// within the library.
     static var librarySampleVideos: [SampleVideo] {
         get throws {
             try GoogleSampleVideo.parseLocalJsonFile()
