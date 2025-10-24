@@ -10,6 +10,14 @@ Until then, breaking changes can happen in any minor version.
 
 This version bumps the package to Swift 6.1 and the demo app to iOS 26.
 
+### 💡 Adjustments
+
+* `VideoSplashScreenViewModifier` now avoids redrawing the source view.
+
+### 💥 Breaking Changes
+
+* `VideoSplashScreenViewModifier` no longer has an enabled property.
+
 
 
 ## 0.3

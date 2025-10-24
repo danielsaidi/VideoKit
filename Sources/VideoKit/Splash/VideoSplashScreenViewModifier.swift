@@ -86,16 +86,18 @@ public struct VideoSplashScreenViewModifier<VideoPlayerView: View>: ViewModifier
 private extension VideoSplashScreenViewModifier {
 
     @ViewBuilder var playerView: some View {
-        videoPlayerView(
-            VideoPlayer(
-                videoURL: videoURL,
-                controllerConfiguration: { controller in
-                    controller.showsPlaybackControls = false
-                },
-                didPlayToEndAction: dismissSplashScreen
+        if let videoURL {
+            videoPlayerView(
+                VideoPlayer(
+                    videoURL: videoURL,
+                    controllerConfiguration: { controller in
+                        controller.showsPlaybackControls = false
+                    },
+                    didPlayToEndAction: dismissSplashScreen
+                )
             )
-        )
-        .ignoresSafeArea()
+            .ignoresSafeArea()
+        }
     }
 }
 
@@ -139,43 +141,39 @@ public extension VideoSplashScreenConfiguration {
 
 public extension View {
 
-    /// Apply a video splash screen that uses a plain ``VideoPlayer`` view.
+    /// Apply a video splash screen that uses a plain ``VideoPlayer`` view
+    /// and a standard configuration.
     ///
     /// The splash screen will be presented when the view is loaded and dismiss
     /// itself to reveal the underlying view once the video finishes playing.
     ///
     /// - Parameters:
-    ///   - videoURL: The video URL to play.
-    ///   - isEnabled: Whether the splash screen is enabled, by default `true`.
-    ///   - configuration: The configuration to apply, by default ``VideoSplashScreenConfiguration/standard``.
+    ///   - videoURL: The video URL to play, if any.
     @ViewBuilder
     func videoSplashScreen(videoURL: URL?) -> some View {
         self.videoSplashScreen(
             videoURL: videoURL,
-            isEnabled: true,
             configuration: nil,
             videoPlayerView: { $0 }
         )
     }
 
-    /// Apply a video splash screen that uses a plain ``VideoPlayer`` view.
+    /// Apply a video splash screen that uses a plain ``VideoPlayer`` view
+    /// and a custom configuration.
     ///
     /// The splash screen will be presented when the view is loaded and dismiss
     /// itself to reveal the underlying view once the video finishes playing.
     ///
     /// - Parameters:
-    ///   - videoURL: The video URL to play.
-    ///   - isEnabled: Whether the splash screen is enabled, by default `true`.
-    ///   - configuration: The configuration to apply, by default ``VideoSplashScreenConfiguration/standard``.
+    ///   - videoURL: The video URL to play, if any.
+    ///   - configuration: The configuration to apply.
     @ViewBuilder
     func videoSplashScreen(
         videoURL: URL?,
-        isEnabled: Bool = true,
         configuration: VideoSplashScreenConfiguration
     ) -> some View {
         self.videoSplashScreen(
             videoURL: videoURL,
-            isEnabled: isEnabled,
             configuration: configuration,
             videoPlayerView: { $0 }
         )
@@ -187,28 +185,22 @@ public extension View {
     /// itself to reveal the underlying view once the video finishes playing. 
     ///
     /// - Parameters:
-    ///   - videoURL: The video URL to play.
-    ///   - isEnabled: Whether the splash screen is enabled, by default `true`.
+    ///   - videoURL: The video URL to play, if any.
     ///   - configuration: The configuration to apply, by default ``VideoSplashScreenConfiguration/standard``.
     ///   - videoPlayerView: A custom video player content builder.
     @ViewBuilder
     func videoSplashScreen<VideoPlayerView: View>(
         videoURL: URL?,
-        isEnabled: Bool = true,
         configuration: VideoSplashScreenConfiguration? = nil,
         @ViewBuilder videoPlayerView: @escaping (VideoPlayer) -> VideoPlayerView
     ) -> some View {
-        if isEnabled {
-            self.modifier(
-                VideoSplashScreenViewModifier(
-                    videoURL: videoURL,
-                    configuration: configuration,
-                    videoPlayerView: videoPlayerView
-                )
+        self.modifier(
+            VideoSplashScreenViewModifier(
+                videoURL: videoURL,
+                configuration: configuration,
+                videoPlayerView: videoPlayerView
             )
-        } else {
-            self
-        }
+        )
     }
 }
 

@@ -33,18 +33,18 @@ struct ContentView: View {
                     }
                 }
             }
-            .navigationTitle("Demo")
+            .navigationTitle("VideoKit")
             .fullScreenCover(item: $selection) { sampleVideo in
                 videoPlayer(for: sampleVideo)
             }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Menu {
-                        Toggle("Launch Video", isOn: $isVideoSplashScreenEnabled)
-                        Section {
+                        Toggle("Splash Video", isOn: $isVideoSplashScreenEnabled)
+                        Section("List") {
                             Picker("Video Mode", selection: $videoMode) {
-                                Text("Modal Videos").tag(VideoMode.modal)
-                                Text("Inline Videos").tag(VideoMode.inline)
+                                Text("List Videos").tag(VideoMode.modal)
+                                Text("List Previews").tag(VideoMode.inline)
                             }
                         }
                     } label: {
@@ -56,8 +56,7 @@ struct ContentView: View {
         }
         .task { fetchSampleVideos() }
         .videoSplashScreen(
-            videoURL: videoSplashUrl,
-            isEnabled: isVideoSplashScreenEnabled,
+            videoURL: isVideoSplashScreenEnabled ? videoSplashUrl : nil,
             configuration: .demo,
             videoPlayerView: { videoPlayer in
                 ZStack {
