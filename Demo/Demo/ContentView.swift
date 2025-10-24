@@ -116,9 +116,7 @@ extension ContentView {
 extension VideoSplashScreenConfiguration {
 
     static var demo: Self {
-        VideoSplashScreenConfiguration(
-            dismissAnimation: .linear(duration: 2)
-        )
+        .init(dismissAnimation: .linear(duration: 1))
     }
 }
 

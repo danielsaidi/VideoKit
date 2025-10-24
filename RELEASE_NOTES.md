@@ -1,8 +1,14 @@
 # Release Notes
 
-[TagKit](https://github.com/danielsaidi/TagKit) will use semver after 1.0.
+[VideoKit](https://github.com/danielsaidi/VideoKit) will use semver after 1.0.
 
 Until then, breaking changes can happen in any minor version.
+
+
+
+## 0.4
+
+This version bumps the package to Swift 6.1 and the demo app to iOS 26.
 
 
 
