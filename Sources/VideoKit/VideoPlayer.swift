@@ -110,6 +110,19 @@ public extension VideoPlayer {
 
 public extension VideoPlayer {
 
+    /// Add a greedy background to the video player.
+    func withBackground<Content: View>(
+        _ content: Content
+    ) -> some View {
+        ZStack {
+            content.frame(maxWidth: .infinity, maxHeight: .infinity)
+            self
+        }
+    }
+}
+
+public extension VideoPlayer {
+
     /// A sample video URL that can be used to test the view.
     static var sampleVideoURL: URL? {
         .init(string: sampleVideoURLString)

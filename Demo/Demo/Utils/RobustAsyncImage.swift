@@ -1,24 +1,37 @@
 //
 //  RobustAsyncImage.swift
-//  TinkTestAssignment
+//  VideoKit
 //
 //  Created by Daniel Saidi on 2025-06-04.
+//  Copyright © 2025 Daniel Saidi. All rights reserved.
 //
 
 import SwiftUI
 
-struct RobustAsyncImage: View {
+struct RobustAsyncImage<ImageView: View>: View {
+
+    init(
+        url: URL?,
+        urlSession: URLSession = .imageSession,
+        image: @escaping (Image) -> ImageView
+    ) {
+        self.url = url
+        self.urlSession = urlSession
+        self.image = image
+    }
 
     init(
         url: URL?,
         urlSession: URLSession = .imageSession
-    ) {
+    ) where ImageView == Image {
         self.url = url
         self.urlSession = urlSession
+        self.image = { $0 }
     }
 
     private let url: URL?
     private let urlSession: URLSession
+    private let image: (Image) -> ImageView
 
     @State private var imagePhase: AsyncImagePhase = .empty
 
@@ -26,7 +39,7 @@ struct RobustAsyncImage: View {
         Group {
             switch imagePhase {
             case .empty: loadingIndicator.onAppear(perform: loadImage)
-            case .success(let image): image.resizable().aspectRatio(contentMode: .fit)
+            case .success(let image): self.image(image)
             case .failure: Image(systemName: "exclamationmark.triangle")
             @unknown default: loadingIndicator
             }

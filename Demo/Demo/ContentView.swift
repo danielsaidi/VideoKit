@@ -19,7 +19,7 @@ struct ContentView: View {
     @AppStorage("LaunchVideo") var isVideoSplashScreenEnabled = true
     @AppStorage("VideoMode") var videoMode = VideoMode.modal
 
-    let gridColums: [GridItem] = [.init(.adaptive(minimum: 450, maximum: 1_000))]
+    let gridColums: [GridItem] = [.init(.adaptive(minimum: 350, maximum: 1_000))]
 
     var body: some View {
         NavigationStack {
@@ -27,7 +27,7 @@ struct ContentView: View {
                 LazyVGrid(columns: gridColums) {
                     ForEach(sampleVideos) { sampleVideo in
                         switch videoMode {
-                        case .inline: videoListItem(for: sampleVideo)
+                        case .inline: inlineListItem(for: sampleVideo)
                         case .modal: modalListItem(for: sampleVideo)
                         }
                     }
@@ -43,8 +43,8 @@ struct ContentView: View {
                         Toggle("Splash Video", isOn: $isVideoSplashScreenEnabled)
                         Section("List") {
                             Picker("Video Mode", selection: $videoMode) {
-                                Text("Play in a modal").tag(VideoMode.modal)
-                                Text("Play inside the list").tag(VideoMode.inline)
+                                Text("Modal video player").tag(VideoMode.modal)
+                                Text("Inline video player").tag(VideoMode.inline)
                             }
                         }
                     } label: {
@@ -57,18 +57,17 @@ struct ContentView: View {
         .task { fetchSampleVideos() }
         .videoSplashScreen(
             videoURL: isVideoSplashScreenEnabled ? videoSplashUrl : nil,
-            configuration: .demo,
-            videoPlayerView: { videoPlayer in
-                ZStack {
-                    Color.black
-                    videoPlayer
-                }
+            configuration: .init(
+                dismissAnimation: .linear(duration: 1)
+            ),
+            videoPlayerView: { player in
+                player.withBackground(Color.black)
             }
         )
     }
 }
 
-extension ContentView {
+private extension ContentView {
 
     var videoSplashUrl: URL? {
         Bundle.main.url(forResource: "DemoSplash", withExtension: "mp4")
@@ -78,20 +77,14 @@ extension ContentView {
         let videos = try? SampleVideo.librarySampleVideos
         sampleVideos = videos ?? []
     }
+}
 
-    func modalListItem(for video: SampleVideo) -> some View {
-        Button {
-            selection = video
-        } label: {
-            DemoListItem(video: video) { video in
-                RobustAsyncImage(url: video.thumbnailUrl)
-            }
-        }
-        .tint(.primary)
-    }
+private extension ContentView {
 
-    func videoListItem(for video: SampleVideo) -> some View {
-        DemoListItem(video: video) { video in
+    func inlineListItem(
+        for video: SampleVideo
+    ) -> some View {
+        listItemTemplate(for: video) {
             VideoPlayer(
                 videoURL: video.videoUrl,
                 time: .constant(30.0),
@@ -104,6 +97,40 @@ extension ContentView {
         }
     }
 
+    func modalListItem(
+        for video: SampleVideo
+    ) -> some View {
+        Button {
+            selection = video
+        } label: {
+            listItemTemplate(for: video) {
+                RobustAsyncImage(url: video.thumbnailUrl) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                }
+            }
+        }
+        .tint(.primary)
+    }
+
+    func listItemTemplate<Content: View>(
+        for video: SampleVideo,
+        content: () -> Content
+    ) -> some View {
+        VStack(alignment: .leading) {
+            content()
+                .clipShape(.rect(cornerRadius: 10))
+            Text(video.title)
+                .font(.title)
+            Text(video.subtitle)
+                .foregroundColor(.primary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding()
+        .multilineTextAlignment(.leading)
+    }
+
     func videoPlayer(for video: SampleVideo) -> some View {
         VideoPlayer(
             videoURL: video.videoUrl,
@@ -112,13 +139,6 @@ extension ContentView {
             }
         )
         .ignoresSafeArea()
-    }
-}
-
-extension VideoSplashScreenConfiguration {
-
-    static var demo: Self {
-        .init(dismissAnimation: .linear(duration: 1))
     }
 }
 
