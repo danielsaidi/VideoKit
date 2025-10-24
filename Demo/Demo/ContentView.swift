@@ -28,7 +28,7 @@ struct ContentView: View {
                     ForEach(sampleVideos) { sampleVideo in
                         switch videoMode {
                         case .inline: videoListItem(for: sampleVideo)
-                        case .modal: thumbnailListItem(for: sampleVideo)
+                        case .modal: modalListItem(for: sampleVideo)
                         }
                     }
                 }
@@ -43,8 +43,8 @@ struct ContentView: View {
                         Toggle("Splash Video", isOn: $isVideoSplashScreenEnabled)
                         Section("List") {
                             Picker("Video Mode", selection: $videoMode) {
-                                Text("List Videos").tag(VideoMode.modal)
-                                Text("List Previews").tag(VideoMode.inline)
+                                Text("Play in a modal").tag(VideoMode.modal)
+                                Text("Play inside the list").tag(VideoMode.inline)
                             }
                         }
                     } label: {
@@ -79,7 +79,7 @@ extension ContentView {
         sampleVideos = videos ?? []
     }
 
-    func thumbnailListItem(for video: SampleVideo) -> some View {
+    func modalListItem(for video: SampleVideo) -> some View {
         Button {
             selection = video
         } label: {
@@ -87,12 +87,14 @@ extension ContentView {
                 RobustAsyncImage(url: video.thumbnailUrl)
             }
         }
+        .tint(.primary)
     }
 
     func videoListItem(for video: SampleVideo) -> some View {
         DemoListItem(video: video) { video in
             VideoPlayer(
                 videoURL: video.videoUrl,
+                time: .constant(30.0),
                 configuration: .list,
                 controllerConfiguration: { controller in
                     // Configure the underlying controller here
@@ -109,6 +111,7 @@ extension ContentView {
                 // Configure the underlying controller here
             }
         )
+        .ignoresSafeArea()
     }
 }
 
