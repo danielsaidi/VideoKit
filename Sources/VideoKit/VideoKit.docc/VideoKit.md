@@ -184,11 +184,6 @@ VideoKit is available under the MIT license.
 
 ## Topics
 
-### Essentials
-
-- ``VideoPlayer``
-- ``VideoPlayerController``
-
 ### Models
 
 - ``MediaItem``
@@ -199,14 +194,13 @@ VideoKit is available under the MIT license.
 - ``Paginable``
 - ``PaginationContext``
 
-### Screens
-
-- ``VideoSplashScreenConfiguration``
-- ``VideoSplashScreenViewModifier``
-
-### Video Assets
+### Video
 
 - ``SampleVideo``
+- ``VideoPlayer``
+- ``VideoPlayerController``
+- ``VideoSplashScreenConfiguration``
+- ``VideoSplashScreenViewModifier``
 
 
 
