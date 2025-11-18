@@ -20,6 +20,18 @@ This version bumps the package to Swift 6.1 and the demo app to iOS 26.
 
 
 
+## 0.4
+
+This version adds new models and views.
+
+### ✨ New Features
+
+* `MediaItem` and `MediaItemType` are two new models.
+* `Paginable` is a new protocol for pagination-compatible types.
+* `PaginationContext` is a new observable model for pagination data.
+
+
+
 ## 0.3
 
 This update simplifies how you can configure a video player and its underlying controller.
