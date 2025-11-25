@@ -10,36 +10,66 @@ import Foundation
 
 /// This struct represents a general media item, that can be
 /// either a movie, podcast, radio show, etc.
-public struct MediaItem: Identifiable, Hashable, Equatable {
+public struct MediaItem: Identifiable, Hashable, Equatable, Sendable {
 
     public init(
         id: String,
         name: String,
-        type: MediaItemType,
+        type: ItemType,
+        languageCode: String = "en",
         backgroundCoverURL: URL? = nil,
         listCoverURL: URL? = nil,
-        thumbnailCoverURL: URL? = nil
+        thumbnailCoverURL: URL? = nil,
+        subtitles: [Subtitle] = []
     ) {
         self.id = id
         self.name = name
         self.type = type
+        self.languageCode = languageCode
         self.backgroundCoverURL = backgroundCoverURL
         self.listCoverURL = listCoverURL
         self.thumbnailCoverURL = thumbnailCoverURL
+        self.subtitles = subtitles
     }
 
     public let id: String
     public let name: String
-    public let type: MediaItemType
+    public let type: ItemType
+    public let languageCode: String
 
     public let backgroundCoverURL: URL?
     public let listCoverURL: URL?
     public let thumbnailCoverURL: URL?
+
+    public let subtitles: [Subtitle]
 }
 
-/// This enum defines all supported media item types.
-public enum MediaItemType {
-    case movie
-    case podcast
-    case radioShow
+public extension MediaItem {
+
+    /// This enum defines all supported media item types.
+    enum ItemType: String, Sendable {
+        case movie
+        case podcast
+        case radioShow
+    }
+
+    /// This enum defines a media item subtitle.
+    struct Subtitle: Equatable, Hashable, Sendable {
+
+        public init(
+            displayName: String,
+            languageCode: String = "en",
+            sourceURL: URL
+        ) {
+            self.displayName = displayName
+            self.languageCode = languageCode
+            self.sourceURL = sourceURL
+        }
+
+        public let displayName: String
+        public let languageCode: String
+        public let sourceURL: URL
+    }
+
+
 }
