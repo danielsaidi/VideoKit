@@ -58,6 +58,26 @@ public extension PaginationContext {
         canFetchNextPage = true
     }
 
+    /// Reset the pagination context and fetch new data.
+    func startFetchingNewData(
+        with fetchOperation: @escaping FetchOperation
+    ) {
+        reset()
+        fetchOperation()
+    }
+
+    /// Check whether an item should trigger a pagination.
+    func shouldFetchNextPage(
+        for item: ItemType
+    ) -> Bool {
+        items.last?.id == item.id
+    }
+
+    /// Stop fetching data.
+    func stopFetchingData() {
+        isLoading = false
+    }
+
     /// Try to fetch and append the next page for an item.
     ///
     /// This function will only trigger if the provided item
@@ -69,15 +89,8 @@ public extension PaginationContext {
         fetchOperation: FetchOperation?
     ) {
         guard let fetchOperation else { return }
-        guard shouldLoadNextPage(for: item) else { return }
+        guard shouldFetchNextPage(for: item) else { return }
         fetchOperation()
-    }
-
-    /// Check whether an item should trigger a pagination.
-    func shouldLoadNextPage(
-        for item: ItemType
-    ) -> Bool {
-        items.last?.id == item.id
     }
 }
 
