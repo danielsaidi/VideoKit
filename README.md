@@ -109,7 +109,7 @@ struct ContentView: View {
 
 You can pass in a configuration to customize the splash screen, and customize the `videoPlayerView`.
 
-See the [getting-started guide][Getting-Started] for more information.
+See the [getting-started guide](https://danielsaidi.github.io/VideoKit/documentation/videokit/getting-started-article) for more information.
 
 
 
@@ -159,5 +159,5 @@ VideoKit is available under the MIT license. See the [LICENSE][License] file for
 [Twitter]: https://twitter.com/danielsaidi
 
 [Documentation]: https://danielsaidi.github.io/VideoKit
-[Getting-Started]: https://danielsaidi.github.io/VideoKit/documentation/videokit/getting-started
+[Getting-Started]: https://danielsaidi.github.io/VideoKit/documentation/videokit/getting-started-article
 [License]: https://github.com/danielsaidi/VideoKit/blob/master/LICENSE
