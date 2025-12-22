@@ -10,6 +10,12 @@ Until then, breaking changes can happen in any minor version.
 
 This version bumps the package to Swift 6.1 and the demo app to iOS 26.
 
+### ✨ New Features
+
+* `MediaItem` is a new models.
+* `Paginable` is a new protocol for paginable types.
+* `PaginationContext` is a new observable pagination model.
+
 ### 💡 Adjustments
 
 * `VideoSplashScreenViewModifier` now avoids redrawing the source view.
@@ -17,18 +23,6 @@ This version bumps the package to Swift 6.1 and the demo app to iOS 26.
 ### 💥 Breaking Changes
 
 * `VideoSplashScreenViewModifier` no longer has an enabled property.
-
-
-
-## 0.4
-
-This version adds new models and views.
-
-### ✨ New Features
-
-* `MediaItem` and `MediaItemType` are two new models.
-* `Paginable` is a new protocol for pagination-compatible types.
-* `PaginationContext` is a new observable model for pagination data.
 
 
 
