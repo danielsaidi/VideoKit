@@ -109,7 +109,7 @@ struct ContentView: View {
 
 You can pass in a configuration to customize the splash screen, and customize the `videoPlayerView`.
 
-See the [getting-started guide][Getting-Started] for more information.
+See the [getting-started guide](https://danielsaidi.github.io/VideoKit/documentation/videokit/getting-started-article) for more information.
 
 
 
