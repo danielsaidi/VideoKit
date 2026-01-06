@@ -3,7 +3,7 @@
 //  VideoKit
 //
 //  Created by Daniel Saidi on 2025-06-17.
-//  Copyright © 2025 Daniel Saidi. All rights reserved.
+//  Copyright © 2025-2026 Daniel Saidi. All rights reserved.
 //
 
 #if os(iOS) || os(tvOS) || targetEnvironment(macCatalyst) || os(visionOS)
