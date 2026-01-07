@@ -13,6 +13,8 @@ private struct TestItem: Paginable {
     let id: Int
 }
 
+@MainActor
+@Suite("Pagination Context Tests")
 struct PaginationContextTests {
 
     // MARK: - Init
@@ -137,7 +139,7 @@ struct PaginationContextTests {
         let context = PaginationContext(items: items)
 
         let lastItem = TestItem(id: 3)
-        #expect(context.shouldLoadNextPage(for: lastItem) == true)
+        #expect(context.shouldFetchNextPage(for: lastItem) == true)
     }
 
     @Test
@@ -150,7 +152,7 @@ struct PaginationContextTests {
         let context = PaginationContext(items: items)
 
         let middleItem = TestItem(id: 2)
-        #expect(context.shouldLoadNextPage(for: middleItem) == false)
+        #expect(context.shouldFetchNextPage(for: middleItem) == false)
     }
 
     @Test
@@ -162,7 +164,7 @@ struct PaginationContextTests {
         let context = PaginationContext(items: items)
 
         let unknownItem = TestItem(id: 999)
-        #expect(context.shouldLoadNextPage(for: unknownItem) == false)
+        #expect(context.shouldFetchNextPage(for: unknownItem) == false)
     }
 
     @Test
@@ -170,6 +172,6 @@ struct PaginationContextTests {
         let context = PaginationContext<TestItem>()
 
         let item = TestItem(id: 1)
-        #expect(context.shouldLoadNextPage(for: item) == false)
+        #expect(context.shouldFetchNextPage(for: item) == false)
     }
 }
