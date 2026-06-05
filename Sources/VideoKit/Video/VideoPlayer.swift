@@ -12,16 +12,20 @@ import SwiftUI
 
 /// This view can be used to stream videos.
 ///
-/// This view wraps a `VideoPlayerController` and loads the video url into
-/// an `AVPlayer`. You can inject an optional `time` binding (seconds). If you
-/// do, your video playback will start at the provided time and future time changes
-/// will be written back to the binding.
+/// The view wraps a ``VideoPlayerController`` and loads the
+/// provided `videoURL` into an `AVPlayer`.
 ///
-/// You can inject a `didPlayToEndAction` action to trigger when the player
-/// reaches the end.
+/// You can inject a `time` binding in seconds, to start the
+/// video at that given time. Future changes will be written
+/// back to the binding, to let you persist it.
 ///
-/// You can use a ``SwiftUICore/View/videoPlayerConfiguration(_:)``
-/// view modifier to customize the video player configuration.
+/// You can inject a `didPlayToEndAction` action, to trigger
+/// when the video reaches the end. You can for instance use
+/// this to add or remove the video from a certain list, set
+/// its time to nil, etc.
+///
+/// You can use ``SwiftUICore/View/videoPlayerConfiguration(_:)``
+/// to customize the video player configuration.
 public struct VideoPlayer: UIViewControllerRepresentable {
 
     /// Create a video player.

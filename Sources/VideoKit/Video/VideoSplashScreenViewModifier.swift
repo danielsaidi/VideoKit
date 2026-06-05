@@ -9,23 +9,28 @@
 #if os(iOS) || os(tvOS) || targetEnvironment(macCatalyst) || os(visionOS)
 import SwiftUI
 
-/// This view modifier can be used to add video-based splash screens to any view.
+/// This view modifier can be used to add video-based splash
+/// screens to any view.
 ///
-/// A video splash screen will play when the view is presented,  then automatically
-/// dismiss itself to reveal the underlying view when the video stops playing.
-///
-/// You can provide a ``VideoSplashScreenConfiguration`` to configure
-/// the splash screen, and a custom view modifier to customize the video player.
-///
-/// > Note: For now, the splash view duration only takes the video duration into the
-/// consideration, not an additional time it may take for the video to be downloaded.
-/// As such, this view is best used with local video files.
+/// A video splash screen will play when a view is presented,
+/// then automatically dismiss itself to show the underlying
+/// view when the video stops playing.
 ///
 /// You can use the ``SwiftUICore/View/videoSplashScreen(videoURL:)``
-/// view modifier or any of its variants, to apply a video splash screen to any view.
+/// view modifier or any of its variants, to apply the video
+/// splash screen to any view.
+///
+/// You can inject a custom ``VideoSplashScreenConfiguration``
+/// to configure the splash screen and apply a view modifier
+/// to customize the video player.
+///
+/// > Note: For now, the splash view duration only takes the
+/// video duration into the consideration, not an additional
+/// time it may take for the video to be downloaded.
 public struct VideoSplashScreenViewModifier<VideoPlayerView: View>: ViewModifier {
 
-    /// Create a video splash screen that uses a plain video player content view.
+    /// Create a video splash screen that uses a plain video
+    /// player content view.
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play.
@@ -41,7 +46,8 @@ public struct VideoSplashScreenViewModifier<VideoPlayerView: View>: ViewModifier
         )
     }
 
-    /// Create a video splash screen with a customized video player content view.
+    /// Create a video splash screen with a customized video
+    /// player content view.
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play.
@@ -112,11 +118,11 @@ private extension VideoSplashScreenViewModifier {
 
 public extension View {
 
-    /// Apply a video splash screen that uses a plain ``VideoPlayer`` view
-    /// and a standard configuration.
+    /// Apply a video splash screen with a standard view and
+    /// a standard splash screen configuration.
     ///
-    /// The splash screen will be presented when the view is loaded and dismiss
-    /// itself to reveal the underlying view once the video finishes playing.
+    /// The splash screen will be presented when the view is
+    /// loaded and dismiss itself when the video finishes.
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play, if any.
@@ -129,11 +135,11 @@ public extension View {
         )
     }
 
-    /// Apply a video splash screen that uses a plain ``VideoPlayer`` view
-    /// and a custom configuration.
+    /// Apply a video splash screen with a standard view and
+    /// a custom splash screen configuration.
     ///
-    /// The splash screen will be presented when the view is loaded and dismiss
-    /// itself to reveal the underlying view once the video finishes playing.
+    /// The splash screen will be presented when the view is
+    /// loaded and dismiss itself when the video finishes.
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play, if any.
@@ -150,10 +156,11 @@ public extension View {
         )
     }
 
-    /// Apply a video splash screen that uses a custom ``VideoPlayer`` view.
+    /// Apply a video splash screen with a custom view and a
+    /// custom splash screen configuration.
     ///
-    /// The splash screen will be presented when the view is loaded and dismiss
-    /// itself to reveal the underlying view once the video finishes playing. 
+    /// The splash screen will be presented when the view is
+    /// loaded and dismiss itself when the video finishes.
     ///
     /// - Parameters:
     ///   - videoURL: The video URL to play, if any.

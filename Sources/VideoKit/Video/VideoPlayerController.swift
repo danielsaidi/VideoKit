@@ -13,8 +13,9 @@ import SwiftUI
 @MainActor
 public final class VideoPlayerController: AVPlayerViewController, VideoSessionManager {
 
-    /// TODO: Verify that this works, since it will crash if we're not in an isolated
-    /// context. If it doesn't, we must call `destroyPlayer` from the outside.
+    /// TODO: Verify that this works, since it will crash if
+    /// we are not in an isolated context. If it doesn't, we
+    /// must call `destroyPlayer` from the outside.
     deinit {
         MainActor.assumeIsolated {
             destroyPlayer()
