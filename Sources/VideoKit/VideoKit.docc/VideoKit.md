@@ -1,6 +1,6 @@
 # ``VideoKit``
 
-A SwiftUI library with a video player and other video-related utilities.
+Add video-related features to your SwiftUI apps.
 
 
 ## Overview
